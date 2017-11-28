@@ -25,3 +25,20 @@ class Network(nn.module):#inheriting from the parent module class of nn.module
         x = F.relu(self.fc1(state))
         q_values = self.fc2(x)
         return q_values
+    
+#Implementing Experience Replay
+
+class Replay(object):
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.memory = []
+        
+    def push(self, event):
+        self.memory.append(event)
+        if len(self.memory) > self.capacity:
+            del self.memory[0]
+            
+    def sample(self, batch_size):
+        samples = zip(*random.sample(self.memory, batch_size))
+        return map(lambda x: Variable(torch.cat(x, 0)), samples)
+        
