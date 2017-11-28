@@ -20,3 +20,8 @@ class Network(nn.module):#inheriting from the parent module class of nn.module
         self.nb_action = nb_action
         self.fc1 = nn.Linear(input_size, 30)
         self.fc2 = nn.Linear(30, nb_action)
+        
+    def forward(self, state):
+        x = F.relu(self.fc1(state))
+        q_values = self.fc2(x)
+        return q_values
